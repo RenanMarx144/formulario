@@ -1,0 +1,21 @@
+#btn{
+  background-color: #ea4335;
+          cursor: pointer;
+          width: 100px;
+          height: 50px;
+          color: aliceblue;
+          font-size: 18px;
+          font-weight: bold;
+          border-radius: 7px;
+          transition: filter 0.3s;
+          &:hover {
+            filter: brightness(0.9);
+          } 
+          &:not(:disabled):hover{
+            filter: brightness(0.9);
+          }
+          &:disabled{
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+}

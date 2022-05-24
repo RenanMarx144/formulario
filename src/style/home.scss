@@ -1,0 +1,76 @@
+#home {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  height: 100vh;
+
+  aside {
+    flex: 6;
+    display: flex;
+    flex-direction: column;
+    background-color: #7c39e8;
+    color: aliceblue;
+    justify-content: center;
+    padding: 90px;
+    .content {
+      p {
+        margin-top: 20px;
+      }
+    }
+  }
+  main {
+    flex: 8;
+    display: flex;
+    padding: 0 32px;
+    align-items: center;
+    justify-content: center;
+    .home-main {
+      img {
+        max-width: 350px;
+      }
+      .cad {
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        .btn-form {
+          background-color: #7c39e8;
+          cursor: pointer;
+          width: 350px;
+          height: 50px;
+          font-size: 18px;
+          color: aliceblue;
+          border-radius: 7px;
+          transition: color 0.4s ease;
+          transition: background-color 0.4s ease;
+          font-weight: bold;
+          &:hover {
+            background-color: #f8f8f8;
+            color: #7c39e8;
+            border: 2px solid #7c39e8;
+          }
+        }
+        .outline {
+          margin: 20px 0;
+          font: 400 12px "Cairo" sans-serif;
+          color: #767679;
+        }
+        .btn-result {
+          background-color: #ea4335;
+          cursor: pointer;
+          width: 350px;
+          height: 50px;
+          color: aliceblue;
+          font-size: 18px;
+          font-weight: bold;
+          border-radius: 7px;
+          transition: filter 0.3s;
+          &:hover {
+            filter: brightness(0.9);
+          }
+        }
+      }
+    }
+  }
+}

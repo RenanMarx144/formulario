@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+$padauk:  'Padauk', sans-serif !global;
+$Barlow:  'Barlow', sans-serif !global;
+$Cairo:  'Cairo', sans-serif !global;
+$colorButtons: #7c39e8;
+body{
+  background-color: #f8f8f8;
+  color: #29292e;
+}
+body, input, textarea, button, a{
+  font-family: $Cairo;
+  font-size: 16px;
+  font-weight: 400;
+  border: none;
+}
+h1, h2, h3, h4, strong{
+  font: 600 26px $Barlow;
+}
+p{
+  font: 400 18px $Cairo;
+  margin: 0;
+  line-height: 24px;
+}
