@@ -1,22 +1,48 @@
 import '../style/formulario.scss';
-import { useState } from "react";
-import ReactDom from "react-dom";
+import React, { useState } from "react";
 import { Telefone } from '../components/telefone';
-import { type } from 'os';
-import { IndexInfo, IndexKind, IndexType } from 'typescript';
+import { IndexKind } from 'typescript';
 
 type add = {
   value: number
 }
+
+
 export function Formulario() {
+  function useForm(initValues: {}) {
+    const [values, setValues] = useState(initValues)
+    function handcheng(e: React.ChangeEvent<HTMLInputElement>) {
+      const filedName: any = e.target.getAttribute('name')
+      setValues(
+        {
+          ...values,
+          [filedName]: e.target.value
+        }
+      )
+      
+    }
+    return {
+      values, handcheng
+    }
+
+  }
+  const form: any = useForm({
+    initValues: {
+      useName: 'eu',
+      useCPF: 'qw'
+    }
+  })
+
+
+
   const [counte, setstate] = useState(1)
   const [st, setsst] = useState(-1)
   const [addMore, setAddMore] = useState<add[]>([])
-  const [cnpj , setCnpj] = useState('from-group d-none')
-  const [cpf , setCpf] = useState('from-group')
-  const [left , setLeft] = useState('0%')
-  const [color , setColort] = useState('white')
-  const [color2 , setColort2] = useState('black')
+  const [cnpj, setCnpj] = useState('from-group d-none')
+  const [cpf, setCpf] = useState('from-group')
+  const [left, setLeft] = useState('0%')
+  const [color, setColort] = useState('white')
+  const [color2, setColort2] = useState('black')
   var teste = [{ value: 1 }]
   async function addmore(e: any) {
     e.preventDefault()
@@ -28,18 +54,18 @@ export function Formulario() {
     await setstate(counte + 1)
     await setAddMore(teste)
     await setsst(st + 1)
-    await console.log(st);    
-    await console.log(addMore);    
+    await console.log(st);
+    await console.log(addMore);
 
   }
-  async function remove(e:any, id: IndexKind) {
+  async function remove(e: any, id: IndexKind) {
     e.preventDefault()
     if (st != (-1)) {
-      
+
       await setsst(st - 1)
       await addMore.splice(id)
-      await console.log(addMore);    
-      await console.log(st);    
+      await console.log(addMore);
+      await console.log(st);
       await setAddMore(addMore)
       await setstate(counte + -1)
     }
@@ -50,7 +76,7 @@ export function Formulario() {
         <fieldset className="f1">
           <legend>Dados de pré cadastro</legend>
           <div className="from-group">
-            <input type="text" placeholder="Nome*" name="nome" />
+            <input type="text" placeholder="Nome*" name="useName" value={form.values.useName} onChange={form.handcheng} />
           </div>
           <div className="from-group">
             <input type="email" placeholder="E-mail*" name="email" />
@@ -63,30 +89,30 @@ export function Formulario() {
         <fieldset className="f2">
           <legend>Dados Fiscos ou Jurídicos</legend>
           <div className="slide-input">
-            <div className="back" style={{left: left}}></div>
+            <div className="back" style={{ left: left }}></div>
             <button className="cpftap"
-            onClick={e => { 
-              e.preventDefault();
-              setCnpj(cnpj => 'from-group d-none')
-              setCpf(cpf => 'from-group ')
-              setLeft(left => '0%')
-              setColort2(color2 => 'black')
-              setColort(color => 'white')
-            }}style={{color: color}}>CPF</button>
-            <button className="cnpjtap" onClick={e => { 
+              onClick={e => {
+                e.preventDefault();
+                setCnpj(cnpj => 'from-group d-none')
+                setCpf(cpf => 'from-group ')
+                setLeft(left => '0%')
+                setColort2(color2 => 'black')
+                setColort(color => 'white')
+              }} style={{ color: color }}>CPF</button>
+            <button className="cnpjtap" onClick={e => {
               e.preventDefault();
               setCnpj(cnpj => 'from-group')
               setCpf(cpf => 'from-group d-none')
               setLeft(left => '50%')
               setColort2(color2 => 'white')
               setColort(color => 'black')
-            }} style={{color: color2}}>CNPJ</button>
+            }} style={{ color: color2 }}>CNPJ</button>
           </div>
           <div className={cpf}>
-            <input type="text" placeholder="CPF*" name="cpf" />
+            <input type="text" placeholder="CPF*" name="useCPF" id='cpf' value={form.values.useCPF} onChange={form.handcheng} />
           </div>
           <div className={cnpj}>
-            <input type="text" placeholder="CNPJ*" name="cpf" />
+            <input type="text" placeholder="CNPJ*" name="cnpj" id='cnpj' />
           </div>
           <div className={cnpj}>
             <input type="text" placeholder="Nome da Empresa" name="empresa" />
@@ -105,7 +131,7 @@ export function Formulario() {
               <input type="tel" placeholder="Telefone" name="tel[]" />
               <input type="tel" placeholder="Ramal" name="ramal[]" id="ramal" />
               <input type="text" placeholder="Nome para contato" name="contato[]" />
-              
+
             </div>
             {
               addMore.map(count => {
@@ -119,8 +145,8 @@ export function Formulario() {
 
           </div>
           <div className='adderm'>
-          <button className='addmore' onClick={(e) => addmore(e)}>Adicionar Mais +</button>
-          <button className='remove' onClick={(event: EventInit) => remove(event,st)}>Remove</button>
+            <button className='addmore' onClick={(e) => addmore(e)}>Adicionar Mais +</button>
+            <button className='remove' onClick={(event: EventInit) => remove(event, st)}>Remove</button>
           </div>
         </fieldset>
         <fieldset className="f4">
