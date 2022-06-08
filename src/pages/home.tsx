@@ -18,6 +18,8 @@ export function Home() {
         Sempre que tenho uma entrevista vejo que os teste principalemente para front end é a criação
         de um formúlario então resolvi criar um prejeto em react já aprensetando essa habilidade
         </p>
+        <p>Tel: 11 98158-9854</p>
+        <p>Zap: 11 96526-5705</p>
         </div>
       </aside>
       <main>

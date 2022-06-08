@@ -15,7 +15,7 @@ export function Telefone(props: TelProps) {
   return (
     <div className="from-group_tel tel" data-tel={props.count}>
       <select name="tipo[]">
-        <option value="">Selecione tipo de Número</option>
+        <option value="">Tipo de Número</option>
         <option value="0">Celular</option>
         <option value="1">Telefone</option>
         <option value="2">Empresarial</option>
