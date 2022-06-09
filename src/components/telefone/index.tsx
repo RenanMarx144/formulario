@@ -1,9 +1,12 @@
 import { type } from '@testing-library/user-event/dist/type';
+import InputMask from "react-input-mask";
 import './style.scss';
 
 type TelProps = {
   count: Number;
-  st?: Number
+  st?: Number;
+  value: {};
+  onChange?: any
 }
 export function Telefone(props: TelProps) {
   function remove(e:any, id: any) {
@@ -20,7 +23,7 @@ export function Telefone(props: TelProps) {
         <option value="1">Telefone</option>
         <option value="2">Empresarial</option>
       </select>
-      <input type="tel" placeholder="Telefone" name="tel[]" />
+      <InputMask mask="(99) 99999-9999" type="tel" placeholder="Telefone" name="tel[]" />
       <input type="tel" placeholder="Ramal" name="ramal[]" id="ramal" />
       <input type="text" placeholder="Nome para contato" name="contato[]" />
 

@@ -30,6 +30,7 @@
     "react-router": "^6.3.0",
     "react-scripts": "5.0.1",
     "remask": "0.1.0-alpha.5",
+    "sweetalert2": "^11.4.17",
     "typescript": "^4.6.4",
     "vanilla-masker": "^1.2.0",
     "web-vitals": "^2.1.4"

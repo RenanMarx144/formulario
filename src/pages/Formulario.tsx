@@ -1,12 +1,19 @@
 import '../style/formulario.scss';
-import React, { FormEvent, useState, useEffect } from "react";
+import React, { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Telefone } from '../components/telefone';
 import { IndexKind } from 'typescript';
 import InputMask from "react-input-mask";
 import { db, ref, set, get } from "../services/firebase";
 import cep from 'cep-promise'
+import Swal from 'sweetalert2'
+
 type add = {
-  value: number
+  id: number,
+  tipo: any,
+  numTel: String,
+  ramal: String,
+  contato: String,
 }
 type endereco = {
   city: String,
@@ -113,8 +120,9 @@ export function Formulario() {
 
 
 
-  function useForm(initValues: {}) {
+  function useForm(initValues: {}, tels: {}) {
     const [values, setValues] = useState(initValues)
+    const [valuess, setValuess] = useState(tels)
     function handcheng(e: React.ChangeEvent<HTMLInputElement>) {
       const filedName: any = e.target.getAttribute('name')
       setValues(
@@ -123,11 +131,23 @@ export function Formulario() {
           [filedName]: e.target.value
         }
       )
+      console.log(values);
 
 
     }
+    function handchengTel(e: React.ChangeEvent<HTMLInputElement>) {
+      const filedName: any = e.target.getAttribute('name')
+      setValuess(
+        {
+          ...valuess,
+          [filedName]: e.target.value
+
+        }
+      )
+      console.log(valuess);
+    }
     return {
-      values, handcheng
+      values, handcheng, handchengTel, valuess
     }
 
   }
@@ -145,7 +165,16 @@ export function Formulario() {
       numero: '',
       neighborhood: '',
       cep: '',
-      useEmail: ''
+      useEmail: '',
+      obs: ''
+    }
+  }, {
+    tels: {
+      id: 0,
+      tipo: '',
+      numTel: '',
+      ramal: '',
+      contato: '',
     }
   })
 
@@ -246,25 +275,35 @@ export function Formulario() {
     return errors
   }
 
-  const [counte, setstate] = useState(1)
-  const [st, setsst] = useState(-1)
-  const [addMore, setAddMore] = useState<add[]>([])
+  const [tels, setTels] = useState<add[]>([])
+  const [counte, setstate] = useState(tels.length+1)
+  const [st, setsst] = useState(0)
   const [cnpj, setCnpj] = useState('from-group d-none')
   const [cpf, setCpf] = useState('from-group')
   const [left, setLeft] = useState('0%')
   const [color, setColort] = useState('white')
   const [color2, setColort2] = useState('black')
-  var teste = [{ value: 1 }]
+  var tel = [{
+    id: 0,
+    tipo: '',
+    numTel: '',
+    ramal: '',
+    contato: '',
+  }]
   async function addmore(e: any) {
     e.preventDefault()
+    setstate(counte + 1)
+    setsst(st + 1)
     for (let index = 0; index < counte; index++) {
-      teste[index] = {
-        value: index
+      tel[index] = {
+        id: index,
+        tipo: '',
+        numTel: '',
+        ramal: '',
+        contato: '',
       }
     }
-    await setstate(counte + 1)
-    await setAddMore(teste)
-    await setsst(st + 1)
+    setTels(tel)
     // await console.log(st);
     // await console.log(addMore);
 
@@ -274,51 +313,85 @@ export function Formulario() {
     if (st != (-1)) {
 
       await setsst(st - 1)
-      await addMore.splice(id)
+      await tels.splice(id)
       // await console.log(addMore);
       // await console.log(st);
-      await setAddMore(addMore)
+      await setTels(tels)
       await setstate(counte + -1)
     }
   }
+  var navegate = useNavigate();
 
   function handleSaveForm(event: FormEvent) {
     event.preventDefault()
+
+    console.log(form);
+
     setErrors(validate(form.values))
 
     if (validateTrue) {
-      get(ref(db, 'users/' + form.values.useCPF)).then((result) => {
+      var email = 'asdasd'
+      var imageUrl = 'asdasd'
+      var userId: any, rp: String
+      delete form.values.initValues
+      delete form.valuess.tels
+      console.log(form.values);
+      if (form.values.useCPF != '') {
+        delete form.values.useEmpresa
+        delete form.values.useCNPJ
+        userId = form.values.useCPF
+        rp = 'CPF'
+      } else {
+        userId = form.values.useCNPJ
+        rp = 'CNPJ'
+        delete form.values.useCPF
+      }
+      get(ref(db, 'users/' + userId)).then((result) => {
         if (result.exists()) {
           var errorss: any = { ...errors };
-          errorss.useCPF = 'CPF já Cadastrado'
+          errorss.useCPF = rp + ' já Cadastrado'
           validateTrue = false
           console.log(errorss);
           setErrors(errorss);
+          Swal.fire({
+            title: 'Erro!',
+            text: rp + ' já Cadastrado',
+            icon: 'error',
+            confirmButtonText: 'Sim'
+          }).then(() => {
+            setTimeout(() => {
+              window.scrollTo({ top: 0, behavior: "smooth" })
+            }, 300);
+          })
         } else {
-          var email = 'asdasd'
-          var imageUrl = 'asdasd'
-          var userId
-          delete form.values.initValues
-          console.log(form.values);
-          if (form.values.useCPF != '') {
-            delete form.values.useEmpresa
-            delete form.values.useCNPJ
-            userId = form.values.useCPF
-          } else {
-            userId = form.values.useCNPJ
-            delete form.values.useCPF
-          }
-
 
           set(ref(db, 'users/' + userId), {
-            ...form.values
-
+            ...form.values,
+            ...form.valuess
             // profile_picture : imageUrl
-          });
+          }).then(() => {
+            Swal.fire({
+              title: 'Enviado!',
+              text: 'Formulário Cadastrado',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              navegate('/')
+            })
+          })
         }
       });
-
-      // db
+    } else {
+      Swal.fire({
+        title: 'Erro!',
+        text: 'Verifique os campos novamente e preencha corretamente',
+        icon: 'error',
+        confirmButtonText: 'Sim'
+      }).then(() => {
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: "smooth" })
+        }, 300);
+      })
     }
   }
   return (
@@ -374,32 +447,32 @@ export function Formulario() {
           <legend>Contato</legend>
           <div id="row_tel">
             <div className="from-group_tel tel" date-tel={1}>
-              <select name="tipo[]">
+              <select name="tipo" onChange={form.handchengTel}>
                 <option value="">Tipo de Número</option>
-                <option value="0">Celular</option>
-                <option value="1">Telefone</option>
-                <option value="2">Empresarial</option>
+                <option value="Celular">Celular</option>
+                <option value="Telefone">Telefone</option>
+                <option value="Empresarial">Empresarial</option>
               </select>
-              <InputMask mask="(99) 99999-9999" type="tel" placeholder="Telefone" name="tel[]" />
-              <input type="tel" placeholder="Ramal" name="ramal[]" id="ramal" />
-              <input type="text" placeholder="Nome para contato" name="contato[]" />
+              <InputMask mask="(99) 99999-9999" type="tel" name="numTel" placeholder="Telefone" value={form.values.tels?.numTel} onChange={form.handchengTel} />
+              <input type="tel" placeholder="Ramal" name="ramal" id="ramal" value={form.values.tels?.ramal} onChange={form.handchengTel} />
+              <input type="text" placeholder="Nome para contato" name="contato" value={form.values.tels?.contato} onChange={form.handchengTel} />
 
             </div>
             {
-              addMore.map(count => {
+              tels.map(count => {
                 return (
-                  <div key={count.value}>
-                    <Telefone count={counte} st={counte} />
+                  <div key={count.id}>
+                    <Telefone count={counte} st={counte} value={tels} />
                   </div>
                 )
               })
             }
 
           </div>
-          <div className='adderm'>
+          {/* <div className='adderm'>
             <button className='addmore' onClick={(e) => addmore(e)}>Adicionar Mais +</button>
             <button className='remove' onClick={(event: EventInit) => remove(event, st)}>Remove</button>
-          </div>
+          </div> */}
         </fieldset>
         <fieldset className="f4">
           <legend>Endereço</legend>
@@ -430,7 +503,7 @@ export function Formulario() {
             <textarea name="obs" id="obs" placeholder='
               Deixe um comentário sobre o que achou do app, sugestões entre ourtos. 
               Se for um Recrutador e ficou intereçado deixe seu contato para que eu possra retorna
-              '></textarea>
+              ' onChange={form.handcheng} value={form.values.obs} ></textarea>
           </div>
         </fieldset>
         <div className='d-flex'>
