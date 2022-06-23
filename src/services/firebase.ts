@@ -3,7 +3,7 @@ import  {initializeApp}  from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import {getAuth} from 'firebase/auth';
-import { getDatabase, ref ,set , get} from "firebase/database";
+import { getDatabase, ref ,set , get, onValue, push, onChildRemoved, remove} from "firebase/database";
 // import {getFirestore , collection , getDocs , getDoc} from 'firebase/firestore';
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -23,5 +23,9 @@ export const db = getDatabase(app);
 export {ref}
 export {set}
 export {get}
+export {onValue}
+export {push}
+export {remove}
+export {onChildRemoved}
 // export const df = getFirestore();
 // const todosCOl = collection(df, 'todos')

@@ -1,0 +1,59 @@
+body{
+  background-color: #f8f8f8;
+  scroll-behavior: smooth;
+}
+#page{
+  display: flex;
+  flex-direction: column;
+  .rollback{
+    margin-bottom: 50px;
+    a{
+      background-color: #7c39e8;
+      color: #f8f8f8;
+      padding: 5px 20px;
+      outline: none;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      &:hover{
+        filter: hue-rotate(45deg);
+      }
+    }
+    margin-left: auto;
+  }
+  padding: 70px 10rem;
+  .ded{
+    list-style: none;
+    background-color: white;
+    padding: 10px;
+    .child{
+      margin-bottom: 50px;
+      list-style: none;
+      display: flex;
+      font-size: 14px;
+      flex-wrap: wrap;
+      border-top: 2px solid #7c39e8;
+      padding-left: 15px;
+      li{
+        width: 18%;
+        padding: 5px;
+      }
+      .obs{
+        width: 100%;
+      }
+      .delete{
+        width: 100%;
+        margin-top: 10px;
+        button{
+          cursor: pointer;
+          padding: 5px 15px; 
+          background-color: #dd2c58;
+          color: #f8f8f8;
+          transition: all 0.3s ease;
+          &:hover{
+            filter: brightness(0.6);
+          }
+        }
+      }
+    }
+  }
+}

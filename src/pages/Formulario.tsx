@@ -336,12 +336,13 @@ export function Formulario() {
       delete form.values.initValues
       delete form.valuess.tels
       console.log(form.values);
-      if (form.values.useCPF != '') {
+      if (form.values.useCPF != undefined && form.values.useCPF != '') {
         delete form.values.useEmpresa
         delete form.values.useCNPJ
         userId = form.values.useCPF
         rp = 'CPF'
-      } else {
+      } 
+      if(form.values.useCNPJ != undefined && form.values.useCNPJ != '') {
         userId = form.values.useCNPJ
         rp = 'CNPJ'
         delete form.values.useCPF
